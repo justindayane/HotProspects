@@ -7,19 +7,41 @@
 
 import SwiftUI
 
+/* Notes
+- In case you were tempted to mix tabView and navigationStack
+ Remember that TabView has to be the parent
+- Use tags to identify the tabs and improvise with their names
+- Give each view a string tag and then use that for the state property
+ */
 struct ContentView: View {
-    let users = ["Mayoly", "May", "Richiery", "Noña", "Loca"]
-    @State private var selection = Set<String>()
+    @State private var selectedTab = "One"
     
     var body: some View {
-        List(users, id:\.self, selection: $selection) { user in
-            Text(user)
+        TabView(selection: $selectedTab) {
+            VStack{
+                Spacer()
+                Text("Tab 1")
+                Spacer()
+                Button("Move to tabe 2") {
+                    selectedTab = "two"
+                    print(selectedTab)
+                }
+                .frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, height: 100)
+                .background(.red)
+                .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                Spacer()
+            }
+            .tabItem {
+                Image(systemName: "star")
+            }
+            .tag("one")
+            Text("tab 2")
+                .tabItem {
+                    Image(systemName: "plus")
+                    Text("two")
+                }
+                .tag("two")
         }
-        
-        if selection.isEmpty == false {
-            Text("You selected \(selection.formatted())")
-        }
-        EditButton()
     }
 }
 
